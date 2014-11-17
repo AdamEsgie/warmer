@@ -27,14 +27,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     self.locationMgr.desiredAccuracy = kCLLocationAccuracyBest
     self.locationMgr.requestAlwaysAuthorization()
     
-//    self.tableView = UITableView(frame: CGRectMake(0, 100, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 200), style: UITableViewStyle.Plain)
-//    self.tableView.delegate = self
-//    self.tableView.dataSource = self
-//    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-//    self.tableView.tableFooterView = UIView(frame: CGRectZero)
-//    self.tableView.backgroundColor = UIColor.clearColor()
-//    self.tableView.reloadData()
-//    self.view.addSubview(self.tableView)
+    self.tableView = UITableView(frame: CGRectMake(0, 100, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 200), style: UITableViewStyle.Plain)
+    self.tableView.delegate = self
+    self.tableView.dataSource = self
+    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+    self.tableView.tableFooterView = UIView(frame: CGRectZero)
+    self.tableView.backgroundColor = UIColor.clearColor()
+    self.tableView.reloadData()
+    self.view.addSubview(self.tableView)
     
     if (!CloudManager.sharedInstance.hasSavedCurrentAccount()) {
       
@@ -64,13 +64,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    self.tableView = UITableView(frame: CGRectMake(0, 100, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 200), style: UITableViewStyle.Plain)
-    self.tableView.delegate = self
-    self.tableView.dataSource = self
-    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-    self.tableView.tableFooterView = UIView(frame: CGRectZero)
-    self.tableView.backgroundColor = UIColor.clearColor()
-    self.view.addSubview(self.tableView)
+
   }
   
   override func viewWillDisappear(animated: Bool) {
@@ -100,23 +94,16 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     
-    var cell: UITableViewCell? = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as? UITableViewCell
-    
-    if (cell == nil) {
-      cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: CellIdentifier)
-    }
-    var record = self.contactRecordArray.objectAtIndex(indexPath.row) as CKRecord 
+    let cell: UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as UITableViewCell
+    var record = self.contactRecordArray.objectAtIndex(indexPath.row) as CKRecord
     
     var text = (record.objectForKey(NameField) as String)
     println(text)
-    cell!.textLabel.text = text
-    cell!.textLabel.textColor = UIColor.whiteColor()
-    cell!.backgroundColor = UIColor.clearColor()
-    
-//    cell!.textLabel.text = "test"
-    
-    return cell!
-  
+    cell.textLabel.text = text
+    cell.textLabel.textColor = UIColor.whiteColor()
+    cell.backgroundColor = UIColor.clearColor()
+
+    return cell
   }
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -130,6 +117,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
 
 //MARK: NSNotification
   func findFriends () {
+    
     CloudManager.sharedInstance.getAllContactsOfUser( { (recordArray) -> () in
       
       for userInfo in recordArray as [CKDiscoveredUserInfo]{
@@ -140,13 +128,13 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
             CloudManager.sharedInstance.fetchRecordWithID(userInfo.userRecordID, completionHandler: { (record) -> () in
               self.contactRecordArray.addObject(record)
               var indexPath = NSIndexPath(forRow:self.contactRecordArray.count-1, inSection: 0)
-              self.tableView.beginUpdates()
-              self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Bottom)
-              self.tableView.endUpdates()
-//              println(record.objectForKey(NameField))
-//              self.tableView.reloadData()
-              
-              
+             
+              dispatch_async(dispatch_get_main_queue(), {
+                self.tableView.beginUpdates()
+                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.endUpdates()
+              })
+
               //add back if have more users
               
               //            CloudManager.sharedInstance.setupNickname(record, completionHandler: { (status) -> () in
