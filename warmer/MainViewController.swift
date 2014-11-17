@@ -9,15 +9,13 @@
 import UIKit
 import CloudKit
 
-let CellIdentifier: String = "cell"
-
 class MainViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource{
 
   var locationMgr : CLLocationManager!
   var linkButton = UIButton()
   var contactIDArray = NSMutableArray()
   var contactRecordArray = NSMutableArray()
-  var tableView = UITableView()
+  var tableView: UITableView!
   
 //MARK: View Setup
   override func viewDidLoad() {
@@ -29,8 +27,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     self.locationMgr.desiredAccuracy = kCLLocationAccuracyBest
     self.locationMgr.requestAlwaysAuthorization()
     
-    self.tableView.delegate = self
-    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+//    self.tableView = UITableView(frame: CGRectMake(0, 100, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 200), style: UITableViewStyle.Plain)
+//    self.tableView.delegate = self
+//    self.tableView.dataSource = self
+//    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+//    self.tableView.tableFooterView = UIView(frame: CGRectZero)
+//    self.tableView.backgroundColor = UIColor.clearColor()
+//    self.tableView.reloadData()
+//    self.view.addSubview(self.tableView)
     
     if (!CloudManager.sharedInstance.hasSavedCurrentAccount()) {
       
@@ -54,16 +58,23 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
       
       self.locationMgr.startUpdatingLocation()
     }
+    
+    NSNotificationCenter.defaultCenter().addObserver(self, selector:"findFriends", name: UIApplicationDidBecomeActiveNotification, object: nil)
   }
   
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
-    
-    self.linkButton.frame = CGRectMake(CGRectGetWidth(self.view.bounds) / 2 - 100, CGRectGetHeight(self.view.bounds) - 110, 200, 100)
-    self.linkButton.backgroundColor = UIColor.whiteColor()
-    self.linkButton.addTarget(self, action:"linkAction:", forControlEvents:UIControlEvents.TouchUpInside)
-    self.view.addSubview(self.linkButton)
-
+    self.tableView = UITableView(frame: CGRectMake(0, 100, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - 200), style: UITableViewStyle.Plain)
+    self.tableView.delegate = self
+    self.tableView.dataSource = self
+    self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+    self.tableView.tableFooterView = UIView(frame: CGRectZero)
+    self.tableView.backgroundColor = UIColor.clearColor()
+    self.view.addSubview(self.tableView)
+  }
+  
+  override func viewWillDisappear(animated: Bool) {
+    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
   }
 
 //MARK: Core Location Delegate
@@ -82,30 +93,6 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   
   }
 
-//MARK: IBAction
-  func linkAction(sender: UIButton) {
-   CloudManager.sharedInstance.getAllContactsOfUser( { (recordArray) -> () in
-    
-    for userInfo in recordArray as [CKDiscoveredUserInfo]{
-      if userInfo.userRecordID.recordName != CloudManager.sharedInstance.currentUserRecord?.recordID.recordName {
-        if !(self.contactIDArray.containsObject(userInfo.userRecordID)) {
-          self.contactIDArray.addObject(userInfo.userRecordID)
-          
-          CloudManager.sharedInstance.fetchRecordWithID(userInfo.userRecordID, completionHandler: { (record) -> () in
-            self.contactRecordArray.addObject(record)
-            
-            //add back if have more users
-            
-//            CloudManager.sharedInstance.setupNickname(record, completionHandler: { (status) -> () in
-//              println(status)
-//            })
-          })
-        }
-      }
-    }
-   })
-  }
-
 //MARK: TableView
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
       return self.contactRecordArray.count
@@ -113,11 +100,22 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     
-    var cell: UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as UITableViewCell
+    var cell: UITableViewCell? = self.tableView.dequeueReusableCellWithIdentifier(CellIdentifier) as? UITableViewCell
     
+    if (cell == nil) {
+      cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: CellIdentifier)
+    }
     var record = self.contactRecordArray.objectAtIndex(indexPath.row) as CKRecord 
     
-    return cell
+    var text = (record.objectForKey(NameField) as String)
+    println(text)
+    cell!.textLabel.text = text
+    cell!.textLabel.textColor = UIColor.whiteColor()
+    cell!.backgroundColor = UIColor.clearColor()
+    
+//    cell!.textLabel.text = "test"
+    
+    return cell!
   
   }
   
@@ -130,6 +128,35 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     super.didReceiveMemoryWarning()
   }
 
-
+//MARK: NSNotification
+  func findFriends () {
+    CloudManager.sharedInstance.getAllContactsOfUser( { (recordArray) -> () in
+      
+      for userInfo in recordArray as [CKDiscoveredUserInfo]{
+        if userInfo.userRecordID.recordName != CloudManager.sharedInstance.currentUserRecord?.recordID.recordName {
+          if !(self.contactIDArray.containsObject(userInfo.userRecordID)) {
+            self.contactIDArray.addObject(userInfo.userRecordID)
+            
+            CloudManager.sharedInstance.fetchRecordWithID(userInfo.userRecordID, completionHandler: { (record) -> () in
+              self.contactRecordArray.addObject(record)
+              var indexPath = NSIndexPath(forRow:self.contactRecordArray.count-1, inSection: 0)
+              self.tableView.beginUpdates()
+              self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Bottom)
+              self.tableView.endUpdates()
+//              println(record.objectForKey(NameField))
+//              self.tableView.reloadData()
+              
+              
+              //add back if have more users
+              
+              //            CloudManager.sharedInstance.setupNickname(record, completionHandler: { (status) -> () in
+              //              println(status)
+              //            })
+            })
+          }
+        }
+      }
+    })
+  }
 }
 

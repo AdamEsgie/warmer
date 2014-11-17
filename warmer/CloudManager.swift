@@ -2,9 +2,6 @@
 import Foundation
 import CloudKit
 
-let NameField = "nickname";
-let LocationField = "location";
-let WarmerUserType = "Users"
 
 class CloudManager : NSObject {
   

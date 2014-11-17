@@ -15,6 +15,8 @@
 		CA607AD61A15056900C30FD8 /* CloudManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA607AD51A15056900C30FD8 /* CloudManager.swift */; };
 		CA607AD91A166F7B00C30FD8 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA607AD81A166F7B00C30FD8 /* StringExtension.swift */; };
 		CA607B0B1A168F2700C30FD8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA607B0A1A168F2700C30FD8 /* LaunchScreen.xib */; };
+		CA607B0D1A1A5E5100C30FD8 /* GlobalHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA607B0C1A1A5E5100C30FD8 /* GlobalHelper.swift */; };
+		CA607B0F1A1A5EC500C30FD8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA607B0E1A1A5EC500C30FD8 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		CA607AD51A15056900C30FD8 /* CloudManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudManager.swift; sourceTree = "<group>"; };
 		CA607AD81A166F7B00C30FD8 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		CA607B0A1A168F2700C30FD8 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		CA607B0C1A1A5E5100C30FD8 /* GlobalHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalHelper.swift; sourceTree = "<group>"; };
+		CA607B0E1A1A5EC500C30FD8 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +90,9 @@
 				CA11BF061A1163D300838CFB /* warmer.entitlements */,
 				CA11BEE61A1163AE00838CFB /* AppDelegate.swift */,
 				CA11BEE81A1163AE00838CFB /* MainViewController.swift */,
+				CA607B0E1A1A5EC500C30FD8 /* DetailViewController.swift */,
 				CA607AD51A15056900C30FD8 /* CloudManager.swift */,
+				CA607B0C1A1A5E5100C30FD8 /* GlobalHelper.swift */,
 				CA607ADB1A166FDE00C30FD8 /* Frameworks */,
 				CA607ADA1A166FD500C30FD8 /* Helpers */,
 				CA11BEE41A1163AE00838CFB /* Supporting Files */,
@@ -242,8 +248,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA607B0D1A1A5E5100C30FD8 /* GlobalHelper.swift in Sources */,
 				CA607AD91A166F7B00C30FD8 /* StringExtension.swift in Sources */,
 				CA607AD61A15056900C30FD8 /* CloudManager.swift in Sources */,
+				CA607B0F1A1A5EC500C30FD8 /* DetailViewController.swift in Sources */,
 				CA11BEE91A1163AE00838CFB /* MainViewController.swift in Sources */,
 				CA11BEE71A1163AE00838CFB /* AppDelegate.swift in Sources */,
 			);
