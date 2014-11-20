@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA11BEE71A1163AE00838CFB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11BEE61A1163AE00838CFB /* AppDelegate.swift */; };
-		CA11BEE91A1163AE00838CFB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11BEE81A1163AE00838CFB /* MainViewController.swift */; };
+		CA11BEE91A1163AE00838CFB /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11BEE81A1163AE00838CFB /* SummaryViewController.swift */; };
 		CA11BEEE1A1163AE00838CFB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA11BEED1A1163AE00838CFB /* Images.xcassets */; };
 		CA11BEFD1A1163AE00838CFB /* warmerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA11BEFC1A1163AE00838CFB /* warmerTests.swift */; };
 		CA11BF081A1163D900838CFB /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA11BF071A1163D900838CFB /* CloudKit.framework */; };
@@ -33,7 +33,7 @@
 		CA11BEE11A1163AE00838CFB /* warmer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = warmer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA11BEE51A1163AE00838CFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA11BEE61A1163AE00838CFB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CA11BEE81A1163AE00838CFB /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		CA11BEE81A1163AE00838CFB /* SummaryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		CA11BEED1A1163AE00838CFB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CA11BEF61A1163AE00838CFB /* warmerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = warmerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA11BEFB1A1163AE00838CFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,13 +89,12 @@
 			children = (
 				CA11BF061A1163D300838CFB /* warmer.entitlements */,
 				CA11BEE61A1163AE00838CFB /* AppDelegate.swift */,
-				CA11BEE81A1163AE00838CFB /* MainViewController.swift */,
+				CA11BEE81A1163AE00838CFB /* SummaryViewController.swift */,
 				CA607B0E1A1A5EC500C30FD8 /* DetailViewController.swift */,
 				CA607AD51A15056900C30FD8 /* CloudManager.swift */,
-				CA607B0C1A1A5E5100C30FD8 /* GlobalHelper.swift */,
-				CA607ADB1A166FDE00C30FD8 /* Frameworks */,
 				CA607ADA1A166FD500C30FD8 /* Helpers */,
 				CA11BEE41A1163AE00838CFB /* Supporting Files */,
+				CA607ADB1A166FDE00C30FD8 /* Frameworks */,
 			);
 			path = warmer;
 			sourceTree = "<group>";
@@ -130,6 +129,7 @@
 		CA607ADA1A166FD500C30FD8 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				CA607B0C1A1A5E5100C30FD8 /* GlobalHelper.swift */,
 				CA607AD81A166F7B00C30FD8 /* StringExtension.swift */,
 			);
 			name = Helpers;
@@ -252,7 +252,7 @@
 				CA607AD91A166F7B00C30FD8 /* StringExtension.swift in Sources */,
 				CA607AD61A15056900C30FD8 /* CloudManager.swift in Sources */,
 				CA607B0F1A1A5EC500C30FD8 /* DetailViewController.swift in Sources */,
-				CA11BEE91A1163AE00838CFB /* MainViewController.swift in Sources */,
+				CA11BEE91A1163AE00838CFB /* SummaryViewController.swift in Sources */,
 				CA11BEE71A1163AE00838CFB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

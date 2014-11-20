@@ -1,6 +1,7 @@
 
 import Foundation
 import CloudKit
+import UIKit
 
 
 class CloudManager : NSObject {
@@ -97,6 +98,28 @@ class CloudManager : NSObject {
       self.publicDB.saveRecord(self.currentUserRecord, completionHandler: { (savedRecord, error) in
         completionHandler(true)
       })
+    })
+  }
+  
+//MARK: Subscriptions
+  func setupSubscriptionOnRecord(record: CKRecord) {
+    
+    let nickname = record.objectForKey(NameField) as String
+    let uuid = UIDevice.currentDevice().identifierForVendor.UUIDString
+//    let predicate = NSPredicate(format: "nickname = %@", nickname)
+    let predicate = NSPredicate(value: true)
+    let subName = "\(uuid)-\(nickname)-subscription-test"
+    let sub = CKSubscription(recordType: UserType, predicate: predicate, subscriptionID:subName ,options: CKSubscriptionOptions.FiresOnRecordUpdate)
+    sub.notificationInfo = CKNotificationInfo()
+    sub.notificationInfo.alertBody = "alert time"
+    
+    self.publicDB.saveSubscription(sub, completionHandler: { (subscription, error) in
+      
+      if (error != nil) {
+        println(error)
+      } else {
+        println("success setting up subscription called \(subName)")
+      }
     })
   }
   

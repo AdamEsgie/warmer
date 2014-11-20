@@ -9,7 +9,7 @@
 import UIKit
 import CloudKit
 
-class MainViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource{
+class SummaryViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource{
 
   var locationMgr : CLLocationManager!
   var linkButton = UIButton()
@@ -21,7 +21,12 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.view.backgroundColor = UIColor.orangeColor()
+    self.view.backgroundColor = BackgroundColor
+    
+    self.navigationController?.navigationBar.barStyle = UIBarStyle.Black
+    self.navigationController?.navigationBar.translucent = false;
+    self.navigationController?.navigationBar.tintColor = OrangeColor;
+    
     self.locationMgr = CLLocationManager()
     self.locationMgr.delegate = self
     self.locationMgr.desiredAccuracy = kCLLocationAccuracyBest
@@ -108,6 +113,9 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UITableVi
   
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     
+    let vc = DetailViewController()
+    CloudManager.sharedInstance.setupSubscriptionOnRecord(self.contactRecordArray.objectAtIndex(indexPath.row) as CKRecord)
+    navigationController?.pushViewController(vc, animated: true)
   }
   
   
